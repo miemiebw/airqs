@@ -23,12 +23,13 @@ import com.google.common.collect.Lists;
 public class AirFinder {
 
 	
-	String param = "{\"customParams\":\"\",\"expectCount\":null,\"hasGeometry\":false,\"highlight\":null,\"queryAllLayer\":false,\"queryLayers\":[{\"groupClause\":\"\",\"layerId\":0,\"layerName\":\"CityStation_ORG1@China400\",\"returnFields\":[\"CHINESE_CH\",\"NAME\",\"SO2实时\",\"NO2实时\",\"PM10实时\",\"API\",\"DATATIME\"],\"sortClause\":\"order by SHOWINDEX\",\"whereClause\":\"\",\"relQueryTableInfos\":null}],\"networkType\":0,\"returnFields\":null,\"startRecord\":0,\"whereClause\":\"\",\"returnCenterAndBounds\":true,\"returnShape\":true}";
+	String cityParam = "{\"customParams\":\"\",\"expectCount\":null,\"hasGeometry\":false,\"highlight\":null,\"queryAllLayer\":false,\"queryLayers\":[{\"groupClause\":\"\",\"layerId\":0,\"layerName\":\"CityStation_ORG1@China400\",\"returnFields\":[\"CHINESE_CH\",\"NAME\",\"SO2实时\",\"NO2实时\",\"PM10实时\",\"API\",\"DATATIME\"],\"sortClause\":\"order by SHOWINDEX\",\"whereClause\":\"\",\"relQueryTableInfos\":null}],\"networkType\":0,\"returnFields\":null,\"startRecord\":0,\"whereClause\":\"\",\"returnCenterAndBounds\":true,\"returnShape\":true}";
+	String stationParam = "{\"customParams\":\"\",\"expectCount\":null,\"hasGeometry\":true,\"highlight\":null,\"queryAllLayer\":false,\"queryLayers\":[{\"groupClause\":\"\",\"layerId\":0,\"layerName\":\"CityStation_Now_ORG1@China400\",\"returnFields\":[\"CHINESE_CH\",\"NAME\",\"监测点位\",\"具体位置\",\"X1\",\"Y1\",\"采样高度_M_\",\"SO2实时\",\"NO2实时\",\"PM10实时\",\"API\",\"DATATIME\"],\"sortClause\":\"\",\"whereClause\":\"CHINESE_CH='%s' and NAME='%s' \",\"relQueryTableInfos\":null}],\"networkType\":0,\"returnFields\":null,\"startRecord\":0,\"whereClause\":\"\",\"returnCenterAndBounds\":true,\"returnShape\":true}";
 	String url = "http://58.68.130.147/IS/AjaxDemo/query.ashx?map=China&method=QueryBySql&trackingLayerIndex=-1&userID=%22c9765d36-26c6-4fea-bca5-94153914ca33%22&queryParam=";
 	public List<AirCityHour> findCityHour() {
 		List<AirCityHour> hours = Lists.newArrayList();
 		
-		String responseBody = find(param);
+		String responseBody = find(cityParam);
 		
 		if(!Strings.isNullOrEmpty(responseBody)){
 			JSONObject jsonObject = JSON.parseObject(responseBody);
@@ -55,6 +56,41 @@ public class AirFinder {
 		}
 		
 		
+		return hours;
+	}
+	
+	public List<AirStationHour> findStationHour(String proName ,String cityName){
+		List<AirStationHour> hours = Lists.newArrayList();
+		
+		String responseBody = find(String.format(stationParam,proName, cityName));
+		if(!Strings.isNullOrEmpty(responseBody)){
+			JSONObject jsonObject = JSON.parseObject(responseBody);
+			JSONArray recordsets = jsonObject.getJSONArray("recordsets");
+			JSONObject recordset = recordsets.getJSONObject(0);
+			JSONArray records = recordset.getJSONArray("records");
+			for (int i = 0; i < records.size(); i++) {
+				AirStationHour hour = new AirStationHour();
+				JSONObject record = records.getJSONObject(i);
+				JSONArray fieldValues = record.getJSONArray("fieldValues");
+				hour.setProvinceName(fieldValues.getString(1));
+				hour.setCityName(fieldValues.getString(2));
+				hour.setPointName(fieldValues.getString(3));
+				hour.setAddress(fieldValues.getString(4));
+				hour.setLat(fieldValues.getDouble(6));
+				hour.setLng(fieldValues.getDouble(5));
+				hour.setHeight(fieldValues.getDouble(7));
+				hour.setSo2(fieldValues.getFloat(8));
+				hour.setNo2(fieldValues.getFloat(9));
+				hour.setPm10(fieldValues.getFloat(10));
+				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd H");
+				try {
+					hour.setReportTime(format.parse(fieldValues.getString(12)));
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+				hours.add(hour);
+			}
+		}
 		return hours;
 	}
 	

@@ -64,6 +64,9 @@ public class DataCrawlTask implements Runnable {
 					airManager.updateCityHour(lastReport);
 				}
 			}
+			
+			
+			
 		}
 	}
 
