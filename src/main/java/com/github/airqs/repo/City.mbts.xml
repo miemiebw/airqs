@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="airqs.city">
+	<cache type="org.mybatis.caches.ehcache.EhcacheCache" eviction="LRU" flushInterval="3600000" size="1024"/>
+	<resultMap id="CityResult" type="com.github.airqs.entity.City">
+		<id property="id" column="id" />
+		<result property="name" column="name"/>
+		<result property="provinceName" column="provinceName"/>
+	</resultMap>
+	
+	
+	<select id="getByProvinceNameAndName" resultMap="CityResult">
+	<![CDATA[
+		select * from airqs_dict_city where provinceName = #{provinceName,jdbcType=VARCHAR} and name = #{name,jdbcType=VARCHAR}
+	]]>
+	</select>
+	
+	<insert id="add" parameterType="com.github.airqs.entity.City" useGeneratedKeys="true" keyProperty="id">
+	<![CDATA[
+		insert into airqs_dict_city (
+			id,name,provinceName
+		)values (
+			#{id,jdbcType=NUMERIC},#{name,jdbcType=VARCHAR},#{provinceName,jdbcType=VARCHAR}
+		)
+	]]>
+	</insert>
+	
+</mapper>

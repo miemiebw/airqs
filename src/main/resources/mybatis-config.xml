@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+    PUBLIC "-//www.mybatis.org//DTD Config 3.0//EN"
+    "mybatis-3-config.dtd">
+<!-- Copyright 2010 The myBatis Team Licensed under the Apache License, Version 
+	2.0 (the "License"); you may not use this file except in compliance with 
+	the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0 
+	Unless required by applicable law or agreed to in writing, software distributed 
+	under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES 
+	OR CONDITIONS OF ANY KIND, either express or implied. See the License for 
+	the specific language governing permissions and limitations under the License. -->
+
+<!-- version: $Id$ -->
+<configuration>
+
+	<settings>
+		<setting name="cacheEnabled" value="true" />
+		<setting name="useGeneratedKeys" value="true" />
+		<setting name="defaultExecutorType" value="REUSE" />
+	</settings>
+
+	<plugins>  
+        <plugin interceptor="com.github.airqs.base.OffsetLimitInterceptor">  
+            <property name="dialectClass" value="com.github.airqs.base.MySQLDialect"/>  
+        </plugin>  
+    </plugins>
+
+	<environments default="airqs-datasource">
+		<environment id="airqs-datasource">
+			<transactionManager type="JDBC" />
+			<dataSource type="com.github.airqs.base.C3P0DataSourceFactory">
+				<property name="driver" value="com.mysql.jdbc.Driver" />
+				<property name="url" value="jdbc:mysql://10.187.18.111:3306/airqs?useUnicode=true&amp;characterEncoding=UTF-8" />
+				<property name="username" value="airqs" />
+				<property name="password" value="airqs" />
+			</dataSource>
+		</environment>
+	</environments>
+
+
+	<mappers>
+		<mapper resource="com/github/airqs/repo/City.mbts.xml" />
+		<mapper resource="com/github/airqs/repo/Station.mbts.xml" />
+		<mapper resource="com/github/airqs/repo/CityHour.mbts.xml" />
+	</mappers>
+
+
+</configuration>
