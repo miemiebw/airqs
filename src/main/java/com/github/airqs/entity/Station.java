@@ -9,41 +9,62 @@ package com.github.airqs.entity;
  */
 public class Station extends BaseEntity {
 	private Integer id;
-	private String areaName;
-	private String name;
+	private String provinceName;
+	private String cityName;
 	private String pointName;
-	private Integer cityId;
+	private String address;
+	private Double lat;
+	private Double lng;
+	private Double height;
 	public Integer getId() {
 		return id;
 	}
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public String getName() {
-		return name;
+	public String getProvinceName() {
+		return provinceName;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setProvinceName(String provinceName) {
+		this.provinceName = provinceName;
 	}
-	public String getAreaName() {
-		return areaName;
+	public String getCityName() {
+		return cityName;
 	}
-	public void setAreaName(String areaName) {
-		this.areaName = areaName;
+	public void setCityName(String cityName) {
+		this.cityName = cityName;
 	}
-	
 	public String getPointName() {
 		return pointName;
 	}
 	public void setPointName(String pointName) {
 		this.pointName = pointName;
 	}
-	public Integer getCityId() {
-		return cityId;
+	public String getAddress() {
+		return address;
 	}
-	public void setCityId(Integer cityId) {
-		this.cityId = cityId;
+	public void setAddress(String address) {
+		this.address = address;
 	}
+	public Double getLat() {
+		return lat;
+	}
+	public void setLat(Double lat) {
+		this.lat = lat;
+	}
+	public Double getLng() {
+		return lng;
+	}
+	public void setLng(Double lng) {
+		this.lng = lng;
+	}
+	public Double getHeight() {
+		return height;
+	}
+	public void setHeight(Double height) {
+		this.height = height;
+	}
+	
 
 	
 }

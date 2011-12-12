@@ -11,6 +11,7 @@ import javax.inject.Singleton;
 
 import com.github.airqs.crawl.AirCityHour;
 import com.github.airqs.crawl.AirFinder;
+import com.github.airqs.crawl.AirStationHour;
 import com.github.airqs.entity.City;
 import com.github.airqs.entity.CityHour;
 import com.github.airqs.manager.AirManager;
@@ -65,6 +66,7 @@ public class DataCrawlTask implements Runnable {
 				}
 			}
 			
+			List<AirStationHour> stationHours = airFinder.findStationHour(city.getProvinceName(), city.getName());
 			
 			
 		}

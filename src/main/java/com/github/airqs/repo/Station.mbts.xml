@@ -5,27 +5,31 @@
 
 <mapper namespace="airqs.station">
 	<cache type="org.mybatis.caches.ehcache.EhcacheCache" eviction="LRU" flushInterval="3600000" size="1024"/>
-	<resultMap id="StationResult" type="com.github.airqs.entity.City">
+	<resultMap id="StationResult" type="com.github.airqs.entity.Station">
 		<id property="id" column="id" />
-		<result property="name" column="name"/>
-		<result property="areaName" column="areaName"/>
+		<result property="provinceName" column="provinceName"/>
+		<result property="cityName" column="cityName"/>
 		<result property="pointName" column="pointName"/>
-		<result property="cityId" column="cityId"/>
+		<result property="address" column="address"/>
+		<result property="lat" column="lat"/>
+		<result property="lng" column="lng"/>
+		<result property="height" column="height"/>
 	</resultMap>
 	
 	
-	<select id="getByName" resultMap="StationResult">
+	<select id="getByProvinceNameAndCityNameAndPointName" resultMap="StationResult">
 	<![CDATA[
-		select * from airqs_station_hour where name = #{name,jdbcType=VARCHAR}
+		select * from airqs_station_hour where provinceName = #{provinceName,jdbcType=VARCHAR} and cityName = #{cityName,jdbcType=VARCHAR} and pointName = #{pointName,jdbcType=VARCHAR}
 	]]>
 	</select>
 	
-	<insert id="add" parameterType="com.github.airqs.entity.City" useGeneratedKeys="true" keyProperty="id">
+	<insert id="add" parameterType="com.github.airqs.entity.Station" useGeneratedKeys="true" keyProperty="id">
 	<![CDATA[
 		insert into airqs_station_hour (
-			id,name,areaName,pointName,cityId
+			id,provinceName,cityName,pointName,address,lat,lng,height
 		)values (
-			#{id,jdbcType=NUMERIC},#{name,jdbcType=VARCHAR},#{areaName,jdbcType=VARCHAR},#{pointName,jdbcType=VARCHAR},#{cityId,jdbcType=NUMERIC},
+			#{id,jdbcType=NUMERIC},#{provinceName,jdbcType=VARCHAR},#{cityName,jdbcType=VARCHAR},#{pointName,jdbcType=VARCHAR},
+			#{address,jdbcType=VARCHAR},#{lat,jdbcType=NUMERIC},,#{lng,jdbcType=NUMERIC},,#{height,jdbcType=NUMERIC}
 		)
 	]]>
 	</insert>
