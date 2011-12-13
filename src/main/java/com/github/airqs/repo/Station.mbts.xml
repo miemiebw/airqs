@@ -19,17 +19,23 @@
 	
 	<select id="getByProvinceNameAndCityNameAndPointName" resultMap="StationResult">
 	<![CDATA[
-		select * from airqs_station_hour where provinceName = #{provinceName,jdbcType=VARCHAR} and cityName = #{cityName,jdbcType=VARCHAR} and pointName = #{pointName,jdbcType=VARCHAR}
+		select * from airqs_dict_station where provinceName = #{provinceName,jdbcType=VARCHAR} and cityName = #{cityName,jdbcType=VARCHAR} and pointName = #{pointName,jdbcType=VARCHAR}
+	]]>
+	</select>
+	
+	<select id="findByProvinceNameAndCityName" resultMap="StationResult">
+	<![CDATA[
+		select * from airqs_dict_station where provinceName = #{provinceName,jdbcType=VARCHAR} and cityName = #{cityName,jdbcType=VARCHAR} 
 	]]>
 	</select>
 	
 	<insert id="add" parameterType="com.github.airqs.entity.Station" useGeneratedKeys="true" keyProperty="id">
 	<![CDATA[
-		insert into airqs_station_hour (
+		insert into airqs_dict_station (
 			id,provinceName,cityName,pointName,address,lat,lng,height
 		)values (
 			#{id,jdbcType=NUMERIC},#{provinceName,jdbcType=VARCHAR},#{cityName,jdbcType=VARCHAR},#{pointName,jdbcType=VARCHAR},
-			#{address,jdbcType=VARCHAR},#{lat,jdbcType=NUMERIC},,#{lng,jdbcType=NUMERIC},,#{height,jdbcType=NUMERIC}
+			#{address,jdbcType=VARCHAR},#{lat,jdbcType=NUMERIC},#{lng,jdbcType=NUMERIC},#{height,jdbcType=NUMERIC}
 		)
 	]]>
 	</insert>

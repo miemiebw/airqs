@@ -42,6 +42,7 @@
 		<mapper resource="com/github/airqs/repo/City.mbts.xml" />
 		<mapper resource="com/github/airqs/repo/Station.mbts.xml" />
 		<mapper resource="com/github/airqs/repo/CityHour.mbts.xml" />
+		<mapper resource="com/github/airqs/repo/StationHour.mbts.xml" />
 	</mappers>
 
 

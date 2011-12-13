@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="airqs.stationHour">
+	<resultMap id="StationHourResult" type="com.github.airqs.entity.StationHour">
+		<id property="id" column="id" />
+		<result property="stationId" column="stationId"/>
+		<result property="reportTime" column="reportTime"/>
+		<result property="so2" column="so2"/>
+		<result property="no2" column="no2"/>
+		<result property="pm10" column="pm10"/>
+		<result property="collectTime" column="collectTime"/>
+	</resultMap>
+	
+	
+	<select id="getLastReportByStationId" resultMap="StationHourResult">
+	<![CDATA[
+		select * from airqs_station_hour h where id = (
+			select max(h.id) from airqs_station_hour h where h.stationId = #{stationId,jdbcType=NUMERIC}
+		)
+	]]>
+	</select>
+	
+	<insert id="add" parameterType="com.github.airqs.entity.StationHour" useGeneratedKeys="true" keyProperty="id">
+	<![CDATA[
+		insert into airqs_station_hour (
+			id,stationId,reportTime,so2,no2,pm10,collectTime
+		)values (
+			#{id,jdbcType=NUMERIC},#{stationId,jdbcType=NUMERIC},#{reportTime,jdbcType=TIMESTAMP},
+			#{so2,jdbcType=VARCHAR},#{no2,jdbcType=VARCHAR},#{pm10,jdbcType=VARCHAR},
+			#{collectTime,jdbcType=TIMESTAMP}
+		)
+	]]>
+	</insert>
+	
+	<update id="update" parameterType="com.github.airqs.entity.StationHour">
+	<![CDATA[
+		update airqs_station_hour set 
+			so2=#{so2,jdbcType=VARCHAR},
+			no2=#{no2,jdbcType=VARCHAR},
+			pm10=#{pm10,jdbcType=VARCHAR},
+			collectTime=#{collectTime,jdbcType=TIMESTAMP}
+		where id=#{id}
+	]]>
+	
+	</update>
+	
+</mapper>

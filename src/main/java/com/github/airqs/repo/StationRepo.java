@@ -3,6 +3,7 @@
  */
 package com.github.airqs.repo;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Singleton;
@@ -24,6 +25,13 @@ public class StationRepo extends BaseMybatisDao {
 		parameter.put("cityName", cityName);
 		parameter.put("pointName", pointName);
 		return (Station) sqlSession.selectOne("airqs.station.getByProvinceNameAndCityNameAndPointName", parameter);
+	}
+	
+	public List<Station> findByProvinceNameAndCityName(String provinceName,String cityName){
+		Map<String,Object> parameter = Maps.newHashMap();
+		parameter.put("provinceName", provinceName);
+		parameter.put("cityName", cityName);
+		return sqlSession.selectList("airqs.station.findByProvinceNameAndCityName", parameter);
 	}
 	
 	public void add(Station station){

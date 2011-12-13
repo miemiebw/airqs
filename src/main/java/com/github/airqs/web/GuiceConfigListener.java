@@ -15,7 +15,9 @@ import org.mybatis.guice.XMLMyBatisModule;
 
 import com.github.airqs.crawl.AirFinder;
 import com.github.airqs.manager.AirManager;
+import com.github.airqs.repo.CityHourRepo;
 import com.github.airqs.repo.CityRepo;
+import com.github.airqs.repo.StationHourRepo;
 import com.github.airqs.repo.StationRepo;
 import com.github.airqs.schedule.DataCrawlTask;
 import com.google.inject.AbstractModule;
@@ -42,6 +44,8 @@ public class GuiceConfigListener implements ServletContextListener {
 			protected void configure() {
 				bind(CityRepo.class);
 				bind(StationRepo.class);
+				bind(CityHourRepo.class);
+				bind(StationHourRepo.class);
 				bind(AirManager.class);
 				bind(AirFinder.class);
 			}
@@ -56,7 +60,7 @@ public class GuiceConfigListener implements ServletContextListener {
 		
 		servletContext.setAttribute(INJECTOR, injector);
 		
-		scheduExec.scheduleWithFixedDelay(injector.getInstance(DataCrawlTask.class), 5, 10 * 60, TimeUnit.SECONDS);
+		scheduExec.scheduleWithFixedDelay(injector.getInstance(DataCrawlTask.class), 5, 15 * 60, TimeUnit.SECONDS);
 	}
 	
 

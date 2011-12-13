@@ -23,10 +23,10 @@ public class AirFinderTestCase {
 		}
 		
 	}
-	@Test
+	//@Test
 	public void findStationHour(){
 		AirFinder finder = new AirFinder();
-		List<AirStationHour> airCityHours = finder.findStationHour("山东","济南");
+		List<AirStationHour> airCityHours = finder.findStationHour("山东");
 		for (AirStationHour airStationHour : airCityHours) {
 			System.out.println(airStationHour);
 		}
