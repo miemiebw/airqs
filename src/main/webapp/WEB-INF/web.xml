@@ -14,7 +14,15 @@
 	</welcome-file-list>
 
 	<listener>
-		<listener-class>com.github.airqs.web.GuiceConfigListener</listener-class>
+		<listener-class>com.github.airqs.web.AirQsConfigListener</listener-class>
 	</listener>
 
+	<filter>
+		<filter-name>glueFilter</filter-name>
+		<filter-class>com.github.glue.mvc.GlueFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>glueFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
 </web-app>

@@ -45,6 +45,10 @@ public class AirManager {
 		cityHourRepo.update(cityHour);
 	}
 	
+	public Station getStation(Integer id){
+		return stationRepo.get(id);
+	}
+	
 	public Station getStationByProvinceNameAndCityNameAndPointName(String provinceName,String cityName,String pointName){
 		return stationRepo.getByProvinceNameAndCityNameAndPointName(provinceName, cityName, pointName);
 	}

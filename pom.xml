@@ -116,6 +116,11 @@
 			<version>2.2.1</version>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.github.glue</groupId>
+			<artifactId>glue-mvc</artifactId>
+			<version>0.2-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 	<repositories>
 		<repository>

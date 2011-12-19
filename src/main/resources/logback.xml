@@ -36,6 +36,6 @@
  
     <!-- 下面配置一些第三方包的日志过滤级别，用于避免刷屏 -->
  
-    <logger name="com.github.glue" level="warn"/>
+    <logger name="com.github" level="DEBUG"/>
  
 </configuration>

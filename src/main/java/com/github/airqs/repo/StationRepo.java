@@ -19,6 +19,10 @@ import com.google.common.collect.Maps;
 @Singleton
 public class StationRepo extends BaseMybatisDao {
 	
+	public Station get(Integer id){
+		return (Station) sqlSession.selectOne("airqs.station.get", id);
+	}
+	
 	public Station getByProvinceNameAndCityNameAndPointName(String provinceName,String cityName,String pointName){
 		Map<String,Object> parameter = Maps.newHashMap();
 		parameter.put("provinceName", provinceName);

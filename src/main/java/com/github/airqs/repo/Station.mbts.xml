@@ -16,6 +16,11 @@
 		<result property="height" column="height"/>
 	</resultMap>
 	
+	<select id="get" resultMap="StationResult">
+	<![CDATA[
+		select * from airqs_dict_station where id = #{id,jdbcType=NUMERIC} 
+	]]>
+	</select>
 	
 	<select id="getByProvinceNameAndCityNameAndPointName" resultMap="StationResult">
 	<![CDATA[
