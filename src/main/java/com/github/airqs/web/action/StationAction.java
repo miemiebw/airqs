@@ -15,6 +15,7 @@
  */
 package com.github.airqs.web.action;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.inject.Inject;
@@ -41,8 +42,8 @@ public class StationAction {
 	@Path("/searchStationNow")
 	public Reply searchStationNow(@Param("lat")Double lat, @Param("lng")Double lng){
 		
-		StationHour stationHour = airManager.getLastStationHourByStationId(335);
-		Station station = airManager.getStation(335);
+		StationHour stationHour = airManager.getLastStationHourByStationId(4);
+		Station station = airManager.getStation(4);
 		StationReport report = new StationReport();
 		report.setProvinceName(station.getProvinceName());
 		report.setCityName(station.getCityName());
@@ -51,7 +52,14 @@ public class StationAction {
 		report.setPm10(stationHour.getPm10());
 		report.setSo2(stationHour.getSo2());
 		report.setNo2(stationHour.getNo2());
-		report.setReportTime(stationHour.getReportTime());
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date reportTime = stationHour.getCollectTime();
+		if(reportTime != null){
+			report.setReportTime(format.format(reportTime));
+		}else{
+			report.setReportTime("");
+		}
+		
 		
 		return Reply.asJson().with(report);
 	}
@@ -70,7 +78,7 @@ public class StationAction {
 		private Float pm10;
 		private Float so2;
 		private Float no2;
-		private Date reportTime;
+		private String reportTime;
 		public String getProvinceName() {
 			return provinceName;
 		}
@@ -107,10 +115,10 @@ public class StationAction {
 		public void setNo2(Float no2) {
 			this.no2 = no2;
 		}
-		public Date getReportTime() {
+		public String getReportTime() {
 			return reportTime;
 		}
-		public void setReportTime(Date reportTime) {
+		public void setReportTime(String reportTime) {
 			this.reportTime = reportTime;
 		}
 		
