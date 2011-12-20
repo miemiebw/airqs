@@ -23,6 +23,10 @@ public class StationRepo extends BaseMybatisDao {
 		return (Station) sqlSession.selectOne("airqs.station.get", id);
 	}
 	
+	public List<Station> findAll(){
+		return sqlSession.selectList("airqs.station.findAll");
+	}
+	
 	public Station getByProvinceNameAndCityNameAndPointName(String provinceName,String cityName,String pointName){
 		Map<String,Object> parameter = Maps.newHashMap();
 		parameter.put("provinceName", provinceName);

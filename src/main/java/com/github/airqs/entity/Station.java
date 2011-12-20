@@ -64,6 +64,28 @@ public class Station extends BaseEntity {
 	public void setHeight(Double height) {
 		this.height = height;
 	}
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Station [id=");
+		builder.append(id);
+		builder.append(", provinceName=");
+		builder.append(provinceName);
+		builder.append(", cityName=");
+		builder.append(cityName);
+		builder.append(", pointName=");
+		builder.append(pointName);
+		builder.append(", address=");
+		builder.append(address);
+		builder.append(", lat=");
+		builder.append(lat);
+		builder.append(", lng=");
+		builder.append(lng);
+		builder.append(", height=");
+		builder.append(height);
+		builder.append("]");
+		return builder.toString();
+	}
 	
 
 	

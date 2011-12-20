@@ -3,8 +3,14 @@
  */
 package com.github.airqs.crawl;
 
+import java.net.URLEncoder;
 import java.util.List;
 
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.junit.Test;
 
 

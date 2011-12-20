@@ -22,6 +22,12 @@
 	]]>
 	</select>
 	
+	<select id="findAll" resultMap="StationResult">
+	<![CDATA[
+		select * from airqs_dict_station 
+	]]>
+	</select>
+	
 	<select id="getByProvinceNameAndCityNameAndPointName" resultMap="StationResult">
 	<![CDATA[
 		select * from airqs_dict_station where provinceName = #{provinceName,jdbcType=VARCHAR} and cityName = #{cityName,jdbcType=VARCHAR} and pointName = #{pointName,jdbcType=VARCHAR}

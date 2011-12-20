@@ -41,9 +41,8 @@ public class StationAction {
 	@Get
 	@Path("/searchStationNow")
 	public Reply searchStationNow(@Param("lat")Double lat, @Param("lng")Double lng){
-		
+		Station station = airManager.getStationByLatLng(lat, lng);
 		StationHour stationHour = airManager.getLastStationHourByStationId(4);
-		Station station = airManager.getStation(4);
 		StationReport report = new StationReport();
 		report.setProvinceName(station.getProvinceName());
 		report.setCityName(station.getCityName());

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE configuration
     PUBLIC "-//www.mybatis.org//DTD Config 3.0//EN"
-    "/Users/eric/dev/git/airqs/mybatis-3-config.dtd">
+    "mybatis-3-config.dtd">
 <!-- Copyright 2010 The myBatis Team Licensed under the Apache License, Version 
 	2.0 (the "License"); you may not use this file except in compliance with 
 	the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0 
@@ -30,7 +30,7 @@
 			<transactionManager type="JDBC" />
 			<dataSource type="com.github.airqs.base.C3P0DataSourceFactory">
 				<property name="driver" value="com.mysql.jdbc.Driver" />
-				<property name="url" value="jdbc:mysql://127.0.0.1:3306/airqs?useUnicode=true&amp;characterEncoding=UTF-8" />
+				<property name="url" value="jdbc:mysql://10.187.18.111:3306/airqs?useUnicode=true&amp;characterEncoding=UTF-8" />
 				<property name="username" value="airqs" />
 				<property name="password" value="airqs" />
 			</dataSource>

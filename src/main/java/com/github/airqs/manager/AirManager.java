@@ -5,6 +5,9 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.github.airqs.entity.City;
 import com.github.airqs.entity.CityHour;
 import com.github.airqs.entity.Station;
@@ -16,7 +19,7 @@ import com.github.airqs.repo.StationRepo;
 
 @Singleton
 public class AirManager {
-
+	private Logger log = LoggerFactory.getLogger(AirManager.class);
 	@Inject
 	CityRepo cityRepo;
 	@Inject
@@ -60,6 +63,24 @@ public class AirManager {
 	public void addStation(Station station){
 		stationRepo.add(station);
 	}
+	
+	public Station getStationByLatLng(Double lat,Double lng){
+		List<Station> stations = stationRepo.findAll();
+		Station result = null;
+		for (Station station : stations) {
+			if(result == null){
+				result = station;
+				continue;
+			}
+			double newDist = MapUtils.getDistance(station.getLat(), station.getLng(), lat, lng);
+			log.debug("{} - {}",station, newDist);
+			if(MapUtils.getDistance(result.getLat(), result.getLng(), lat, lng) > newDist){
+				result = station;
+			}
+		}
+		return result;
+	}
+	
 	
 	public StationHour getLastStationHourByStationId(Integer stationId){
 		return stationHourRepo.getLastReportByStationId(stationId);
