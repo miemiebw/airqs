@@ -17,6 +17,7 @@ package com.github.airqs.web.action;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -28,6 +29,7 @@ import com.github.glue.mvc.annotation.Action;
 import com.github.glue.mvc.annotation.Get;
 import com.github.glue.mvc.annotation.Param;
 import com.github.glue.mvc.annotation.Path;
+import com.google.common.collect.Lists;
 
 /**
  * @author Eric.Lee
@@ -43,6 +45,28 @@ public class StationAction {
 	public Reply searchStationNow(@Param("lat")Double lat, @Param("lng")Double lng){
 		Station station = airManager.getStationByLatLng(lat, lng);
 		StationHour stationHour = airManager.getLastStationHourByStationId(station.getId());
+		
+		StationReport report = convert(station, stationHour);
+		
+		return Reply.asJson().with(report);
+	}
+
+	@Get
+	@Path("/searchStation")
+	public Reply searchStation(@Param("cityName")String cityName){
+		List<Station> stations = airManager.findStationLikeCityName(cityName);
+		List<StationReport> stationReports = Lists.newArrayList();
+		for (Station station : stations) {
+			StationHour stationHour = airManager.getLastStationHourByStationId(station.getId());
+			StationReport report = convert(station, stationHour);
+			stationReports.add(report);
+		}
+		
+		return Reply.asJson().with(stationReports);
+	}
+	
+	
+	private StationReport convert(Station station,StationHour stationHour){
 		StationReport report = new StationReport();
 		report.setProvinceName(station.getProvinceName());
 		report.setCityName(station.getCityName());
@@ -58,12 +82,8 @@ public class StationAction {
 		}else{
 			report.setReportTime("");
 		}
-		
-		
-		return Reply.asJson().with(report);
+		return report;
 	}
-
-	
 	
 	@Inject
 	public void setAirManager(AirManager airManager) {

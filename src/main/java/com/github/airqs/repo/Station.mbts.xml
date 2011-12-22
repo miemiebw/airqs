@@ -40,6 +40,12 @@
 	]]>
 	</select>
 	
+	<select id="findLikeCityName" resultMap="StationResult">
+	<![CDATA[
+		select * from airqs_dict_station where cityName like #{cityName,jdbcType=VARCHAR} 
+	]]>
+	</select>
+	
 	<insert id="add" parameterType="com.github.airqs.entity.Station" useGeneratedKeys="true" keyProperty="id">
 	<![CDATA[
 		insert into airqs_dict_station (

@@ -93,4 +93,8 @@ public class AirManager {
 	public void updateStationHour(StationHour stationHour){
 		stationHourRepo.update(stationHour);
 	}
+	
+	public List<Station> findStationLikeCityName(String cityName){
+		return stationRepo.findLikeCityName(cityName);
+	}
 }

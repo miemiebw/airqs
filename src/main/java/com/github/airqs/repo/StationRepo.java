@@ -42,6 +42,11 @@ public class StationRepo extends BaseMybatisDao {
 		return sqlSession.selectList("airqs.station.findByProvinceNameAndCityName", parameter);
 	}
 	
+	public List<Station> findLikeCityName(String cityName){
+		return sqlSession.selectList("airqs.station.findLikeCityName", "%"+cityName+"%");
+	}
+	
+	
 	public void add(Station station){
 		sqlSession.insert("airqs.station.add", station);
 	}
