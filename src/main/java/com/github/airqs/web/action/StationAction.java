@@ -18,6 +18,7 @@ package com.github.airqs.web.action;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -29,7 +30,9 @@ import com.github.glue.mvc.annotation.Action;
 import com.github.glue.mvc.annotation.Get;
 import com.github.glue.mvc.annotation.Param;
 import com.github.glue.mvc.annotation.Path;
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 /**
  * @author Eric.Lee
@@ -41,7 +44,7 @@ public class StationAction {
 	private AirManager airManager;
 	
 	@Get
-	@Path("/searchStationNow")
+	@Path("/searchStationNow.json")
 	public Reply searchStationNow(@Param("lat")Double lat, @Param("lng")Double lng){
 		Station station = airManager.getStationByLatLng(lat, lng);
 		StationHour stationHour = airManager.getLastStationHourByStationId(station.getId());
@@ -50,24 +53,53 @@ public class StationAction {
 		
 		return Reply.asJson().with(report);
 	}
+	
+	@Get
+	@Path("/searchStationById.json")
+	public Reply searchStationById(@Param("stationId")Integer staionId){
+		Station station = airManager.getStation(staionId);
+		StationHour stationHour = airManager.getLastStationHourByStationId(station.getId());
+		StationReport report = convert(station, stationHour);
+		
+		return Reply.asJson().with(report);
+	}
 
 	@Get
-	@Path("/searchStation")
+	@Path("/searchStation.json")
 	public Reply searchStation(@Param("cityName")String cityName){
-		List<Station> stations = airManager.findStationLikeCityName(cityName);
-		List<StationReport> stationReports = Lists.newArrayList();
-		for (Station station : stations) {
-			StationHour stationHour = airManager.getLastStationHourByStationId(station.getId());
-			StationReport report = convert(station, stationHour);
-			stationReports.add(report);
-		}
 		
-		return Reply.asJson().with(stationReports);
+		List<StationGroup> stationGroups = Lists.newArrayList();
+		if(!Strings.isNullOrEmpty(cityName)){
+			List<Station> stations = airManager.findStationLikeCityName(cityName);
+			Map<String, List<StationReport>> groups = Maps.newHashMap();
+			for (Station station : stations) {
+				StationHour stationHour = airManager.getLastStationHourByStationId(station.getId());
+				if(stationHour != null){
+					String name = station.getProvinceName() +" － " +station.getCityName();
+					StationReport report = convert(station, stationHour);
+					List<StationReport> reports = groups.get(name);
+					if(reports == null){
+						reports = Lists.newArrayList();
+						groups.put(name, reports);
+					}
+					reports.add(report);
+				}
+			}
+			
+			for(Map.Entry<String, List<StationReport>> entry : groups.entrySet()){
+				StationGroup group = new StationGroup();
+				group.setCityName(entry.getKey());
+				group.setReports(entry.getValue());
+				stationGroups.add(group);
+			}
+		}
+		return Reply.asJson().with(stationGroups);
 	}
 	
 	
 	private StationReport convert(Station station,StationHour stationHour){
 		StationReport report = new StationReport();
+		report.setStationId(station.getId());
 		report.setProvinceName(station.getProvinceName());
 		report.setCityName(station.getCityName());
 		report.setPointName(station.getPointName());
@@ -90,7 +122,29 @@ public class StationAction {
 		this.airManager = airManager;
 	}
 	
+	public class StationGroup{
+		private String cityName;
+		private List<StationReport> reports;
+		public String getCityName() {
+			return cityName;
+		}
+		public void setCityName(String cityName) {
+			this.cityName = cityName;
+		}
+		public List<StationReport> getReports() {
+			return reports;
+		}
+		public void setReports(List<StationReport> reports) {
+			this.reports = reports;
+		}
+		
+		
+		
+		
+	}
+	
 	public class StationReport{
+		private Integer stationId;
 		private String provinceName;
 		private String cityName;
 		private String pointName;
@@ -98,6 +152,13 @@ public class StationAction {
 		private Float so2;
 		private Float no2;
 		private String reportTime;
+		
+		public Integer getStationId() {
+			return stationId;
+		}
+		public void setStationId(Integer stationId) {
+			this.stationId = stationId;
+		}
 		public String getProvinceName() {
 			return provinceName;
 		}

@@ -18,7 +18,7 @@
 	<select id="getLastReportByStationId" resultMap="StationHourResult">
 	<![CDATA[
 		select * from airqs_station_hour h where id = (
-			select max(h.id) from airqs_station_hour h where h.stationId = #{stationId,jdbcType=NUMERIC}
+			select max(h.id) from airqs_station_hour h where h.stationId = #{stationId,jdbcType=NUMERIC} and ( h.pm10 is not null or h.so2 is not null or h.no2 is not null)
 		)
 	]]>
 	</select>
